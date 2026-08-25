@@ -140,3 +140,99 @@ urgent_names = get_urgent_task_names(enriched_tasks)
 print("\nExercise 5: The Pythonic Way")
 print(f"Urgent tasks to do: {urgent_names}")
 # Expected Output: ['Fix server crash', 'Write documentation']
+
+# === Exercise 5.5: The Data Filter ===
+"""
+Exercise 5.5: The Data Filter (The Long Way)
+In AI and Data Science, 80% of your job is filtering out bad data. Before we learn the "one-line" shortcut, you need to be completely comfortable writing the "long way."
+The Goal:
+You have a list of raw sensor readings (numbers). Some are negative (errors), and some are too high (outliers).
+Write a function that loops through the list, keeps only the valid readings (between 10 and 50, inclusive), and returns a new list with just those valid numbers.
+Rules:
+1. Do NOT use list comprehensions.
+2. Do NOT use filter() or lambda.
+3. Create an empty list at the start (the "accumulator").
+4. Use a standard for loop.
+5. Use an if statement to check the condition.
+6. Use .append() to add the valid numbers to your empty list.
+"""
+
+def filter_sensor_readings(readings: list[int]) -> list[int]:
+    # 1. Create an empty list to hold our good data
+    valid_readings = []
+    
+    # 2. Write a standard for loop to look at each 'reading' in 'readings'
+    for reading in readings:
+    # 3. Inside the loop, write an if statement:
+    #    If the reading is >= 10 AND the reading is <= 50:
+        if reading >=10 and reading <=50:
+    # 4. If it is valid, append it to 'valid_readings'
+            valid_readings.append(reading)
+    # 5. Return the 'valid_readings' list
+    return valid_readings
+
+# --- Test your function ---
+raw_data = [5, 12, 45, 99, -3, 22, 50, 10, 8]
+
+good_data = filter_sensor_readings(raw_data)
+
+print("\nExercise 5.5: The Data Filter")
+print(f"Raw data: {raw_data}")
+print(f"Filtered data: {good_data}")
+# Expected Output: [12, 45, 22, 50, 10]
+
+# === Exercise 6: The Data Sorter ===
+"""
+The Goal: Write a function that takes the enriched_tasks list and returns a new list sorted by estimated_hours in descending order (longest tasks first).
+Hint: The syntax for sorted() with a lambda looks like this:
+sorted(iterable, key=lambda item: item["some_key"], reverse=True)
+"""
+# === Exercise 6: The Data Sorter ===
+def sort_tasks_by_time(task_list: list[dict]) -> list[dict]:
+    #Return the sorted list using sorted() and a lambda function.
+    # Sort by 'estimated_hours' in descending order (highest hours first).
+    return sorted(task_list, key=lambda item: item["estimated_hours"], reverse=True) 
+        
+
+# --- Test your function ---
+enriched_tasks = [
+    {"text": "Fix server crash", "priority": 1, "estimated_hours": 4, "is_urgent": True},
+    {"text": "Write documentation", "priority": 2, "estimated_hours": 2, "is_urgent": True},
+    {"text": "Brainstorm ideas", "priority": 3, "estimated_hours": 1, "is_urgent": False},
+    {"text": "Mystery task", "estimated_hours": 1, "is_urgent": False}
+]
+
+sorted_tasks = sort_tasks_by_time(enriched_tasks)
+
+print("\nExercise 6: The Data Sorter")
+for task in sorted_tasks:
+    print(f"- {task['text']} ({task['estimated_hours']} hours)")
+
+# === Exercise 7: The Lookup Map ===
+"""
+The Goal: Write a function create_task_lookup(task_list: list[dict]) -> dict[str, int] that takes your list of tasks and converts it into a dictionary where:
+- The Key is the task's "text".
+- The Value is the task's "estimated_hours".
+Hint: A dictionary comprehension looks very similar to a list comprehension, but uses curly braces {} and a colon : to define the key and value:
+{key: value for item in iterable}
+"""
+# === Exercise 7: The Lookup Map ===
+def create_task_lookup(task_list: list[dict]) -> dict[str, int]:
+    # Write this in ONE line using a dictionary comprehension!
+    return {task["text"]: task.get("estimated_hours", 0) for task in task_list}
+
+# --- Test your function ---
+enriched_tasks = [
+    {"text": "Fix server crash", "priority": 1, "estimated_hours": 4, "is_urgent": True},
+    {"text": "Write documentation", "priority": 2, "estimated_hours": 2, "is_urgent": True},
+    {"text": "Brainstorm ideas", "priority": 3, "estimated_hours": 1, "is_urgent": False}
+]
+
+task_map = create_task_lookup(enriched_tasks)
+
+print("\nExercise 7: The Lookup Map")
+print(task_map)
+# Expected Output: {'Fix server crash': 4, 'Write documentation': 2, 'Brainstorm ideas': 1}
+
+# Proving it works as a lookup:
+print(f"\nHours needed for 'Fix server crash': {task_map['Fix server crash']}")
