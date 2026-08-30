@@ -1,6 +1,7 @@
 # === Exercise 1: The Task Completer ===
 # Right now, you can create tasks, but you need a way to automatically check them off.
 #The Goal: Write a function that takes a list of task dictionaries and a specific task name. It should loop through the list, find the task that matches the name, and change its "done" status to True.
+
 def complete_task(task_list: list[dict], target_task_name: str) -> bool:
     for task in task_list: #Loop through 'task_list'
         if task["text"] == target_task_name: #Check if the dictionary's "text" key matches 'target_task_name'
@@ -180,6 +181,184 @@ print("\nExercise 5.5: The Data Filter")
 print(f"Raw data: {raw_data}")
 print(f"Filtered data: {good_data}")
 # Expected Output: [12, 45, 22, 50, 10]
+
+# === Exercise 5.6: The Data Transformer ===
+"""
+The Goal:
+You have a list of temperatures in Celsius. Write a function that loops through the list, converts each temperature to Fahrenheit, and returns a new list with the converted numbers.
+Formula: Fahrenheit = (Celsius * 9/5) + 32
+Rules:
+1. Do NOT use list comprehensions.
+2. Create an empty list at the start.
+3. Use a standard for loop.
+4. Calculate the new value, and use .append() to add it to your empty list.
+5. Return the new list.
+"""
+def convert_celsius_to_fahrenheit(celsius_list: list[float]) -> list[float]:
+    # 1. Create an empty list to hold the converted temperatures
+    fahrenheit_list = []
+    
+    # 2. Write a standard for loop to look at each 'temp' in 'celsius_list'
+    for temp in celsius_list:
+    
+    # 3. Inside the loop, calculate the fahrenheit value
+    #    Formula: (temp * 9/5) + 32
+        fahrenheit_value = (temp * 9/5) + 32
+    
+    # 4. Append the new fahrenheit value to 'fahrenheit_list'
+        fahrenheit_list.append(fahrenheit_value)
+    # 5. Return the 'fahrenheit_list'
+    return fahrenheit_list
+
+# --- Test your function ---
+celsius_data = [0, 20, 37, 100]
+
+fahrenheit_data = convert_celsius_to_fahrenheit([float(temp) for temp in celsius_data])
+
+print("\nExercise 5.6: The Data Transformer")
+print(f"Celsius: {celsius_data}")
+print(f"Fahrenheit: {fahrenheit_data}")
+# Expected Output: [32.0, 68.0, 98.6, 212.0]
+
+# === Exercise 5.7: The Data Aggregator ===
+"""
+The Goal:
+Write a function that calculates the average of a list of numbers.
+Rules:
+1. Do NOT use the built-in sum() or len() functions for this exercise. We want to practice the loop!
+2. Create two variables at the start: total (set to 0) and count (set to 0).
+3. Use a standard for loop.
+4. Inside the loop, add the current number to total, and add 1 to count.
+5. After the loop finishes, divide total by count and return the result.
+"""
+
+def calculate_average(numbers: list[float]) -> float:
+    # 1. Create variables to hold the running total and the count
+    total = 0.0
+    count = 0
+    
+    # 2. Write a standard for loop to look at each 'num' in 'numbers'
+    for num in numbers:
+    # 3. Inside the loop, add 'num' to 'total'
+        total += num
+    # 4. Inside the loop, add 1 to 'count'
+        count += 1
+    # 5. After the loop, calculate the average (total / count) and return it
+    average = (total / count)
+    return average
+
+# --- Test your function ---
+sensor_readings = [10.0, 20.0, 30.0, 40.0, 50.0]
+
+average = calculate_average(sensor_readings)
+
+print("\nExercise 5.7: The Data Aggregator")
+print(f"Readings: {sensor_readings}")
+print(f"Average: {average}")
+# Expected Output: 30.0
+
+# === Exercise 5.8: The Data Grouping ===
+"""
+The Goal:
+You have a list of task dictionaries, and each task has a "category" (like "Work" or "Personal"). Write a function that groups these tasks into a new dictionary.
+The keys of the new dictionary should be the category names.
+The values should be a list of the tasks that belong to that category.
+Rules:
+1. Do NOT use any advanced Python tools. Just standard loops and dictionaries.
+2. Create an empty dictionary at the start: grouped_tasks = {}.
+3. Loop through the task_list.
+4. Get the "category" from the task using .get(). If it's missing, default to "Other".
+5. The tricky part: Before you append the task to the list for that category, you must check if the category already exists in your grouped_tasks dictionary. If it doesn't exist yet, you need to create an empty list for it first!
+6. Append the task to the correct list.
+7. Return the grouped_tasks dictionary.
+"""
+
+def group_tasks_by_category(task_list: list[dict]) -> dict[str, list[dict]]:
+    # 1. Create an empty dictionary to hold our grouped data
+    grouped_tasks = {}
+    
+    # 2. Write a standard for loop to look at each 'task' in 'task_list'
+    for task in task_list:
+    # 3. Inside the loop, get the 'category' from the task. 
+    #    Default to "Other" if it's missing.
+        category = task.get("category", "Other")
+    # 4. Check if the 'category' is already a key in 'grouped_tasks'.
+        if category in grouped_tasks:
+            pass
+    #    If it is NOT in the dictionary, set grouped_tasks[category] = []
+        else:
+            grouped_tasks[category] = []
+    # 5. Append the 'task' to the list at grouped_tasks[category]
+        grouped_tasks[category].append(task)
+    # 6. Return the 'grouped_tasks' dictionary
+    return grouped_tasks
+
+# --- Test your function ---
+my_tasks = [
+    {"text": "Fix bug", "category": "Work"},
+    {"text": "Buy milk", "category": "Personal"},
+    {"text": "Write email", "category": "Work"},
+    {"text": "Walk the dog", "category": "Personal"},
+    {"text": "Mystery task"} # Test your default "Other" logic!
+]
+
+grouped = group_tasks_by_category(my_tasks)
+
+print("\nExercise 5.8: The Data Grouping")
+for category, tasks in grouped.items():
+    print(f"\n{category}:")
+    for t in tasks:
+        print(f" - {t['text']}")
+
+
+# === Exercise 5.9: The Mini Data Pipeline ===
+"""
+The Goal:
+Write a single function process_task_pipeline(raw_tasks: list[dict]) -> dict[str, list[str]] that does three things in order:
+1. Filter: Ignore any task that doesn't have a "text" key (invalid data).
+2. Transform: Convert the task's "category" to lowercase (e.g., "Work" becomes "work") so they group nicely. If it has no category, default to "other".
+3. Group: Group the valid, transformed tasks by their new lowercase category. Instead of returning the whole dictionary, just return a list of the task texts for each category.
+Rules:
+Use standard for loops and if statements.
+Use .get() to safely check for keys.
+Return a dictionary where keys are categories and values are lists of strings (task texts).
+"""
+def process_task_pipeline(raw_tasks: list[dict]) -> dict[str, list[str]]:
+    # 1. Create an empty dictionary for our final grouped data
+    pipeline_output = {}
+    
+    # 2. Loop through each 'task' in 'raw_tasks'
+    for task in raw_tasks:
+    # 3. FILTER: If the task doesn't have a "text" key, skip it. 
+    #    (Hint: use `if "text" not in task: continue`)
+        if "text" in task:
+    # 4. TRANSFORM: Get the category, default to "other", and make it lowercase.
+            category = task.get("category", "other").lower()
+    # 5. GROUP: Check if the category is in pipeline_output. 
+    #    If not, create an empty list for it.
+            if category not in pipeline_output:
+                pipeline_output[category] = []
+    # 6. Append the task's "text" to the correct category list.
+            pipeline_output[category].append(task["text"])
+    # 7. Return pipeline_output
+    return pipeline_output
+
+# --- Test your function ---
+messy_raw_data = [
+    {"text": "Fix bug", "category": "Work"},
+    {"text": "Buy milk", "category": "PERSONAL"}, # Uppercase!
+    {"category": "Work"}, # Missing text! (Should be filtered out)
+    {"text": "Write email", "category": "work"},
+    {"text": "Walk the dog", "category": "Personal"},
+    {"text": "Mystery task"} # Missing category! (Should become "other")
+]
+
+final_output = process_task_pipeline(messy_raw_data)
+
+print("\nExercise 5.9: The Mini Data Pipeline")
+for category, texts in final_output.items():
+    print(f"\n{category.upper()}: {texts}")
+
 
 # === Exercise 6: The Data Sorter ===
 """
