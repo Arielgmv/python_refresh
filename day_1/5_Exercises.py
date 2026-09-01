@@ -360,6 +360,33 @@ for category, texts in final_output.items():
     print(f"\n{category.upper()}: {texts}")
 
 
+# === Exercise 5.10: The Data Filter (Short version) ===
+def filter_sensor_readings_short(readings: list[int]) -> list[int]:
+    valid_readings = [reading for reading in readings if reading >= 10 and reading <= 50]
+    return valid_readings
+
+# --- Test your function ---
+raw_data = [5, 12, 45, 99, -3, 22, 50, 10, 8]
+
+good_data = filter_sensor_readings_short(raw_data)
+print("\nExercise 5.10: The Data Filter (Short version)")
+print(f"Raw data: {raw_data}")
+print(f"Filtered data: {good_data}")
+
+# === Exercise 5.11: The Data Transformer (Short version) ===
+def convert_celsius_to_fahrenheit_short(celsius_list: list[float]) -> list[float]:
+    fahrenheit_value = [((temp * 9/5) +32) for temp in celsius_list]
+    return fahrenheit_value
+
+# --- Test your function ---
+celsius_data = [0, 20, 37, 100]
+
+fahrenheit_data = convert_celsius_to_fahrenheit_short([float(temp) for temp in celsius_data])
+
+print("\nExercise 5.11: The Data Transformer (Short version)")
+print(f"Celsius: {celsius_data}")
+print(f"Fahrenheit: {fahrenheit_data}")
+
 # === Exercise 6: The Data Sorter ===
 """
 The Goal: Write a function that takes the enriched_tasks list and returns a new list sorted by estimated_hours in descending order (longest tasks first).
