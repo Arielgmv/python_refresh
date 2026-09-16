@@ -1,0 +1,8 @@
+{
+    "model_name": "fastapi-ai",
+    "version": 1.0,
+    "features": [
+        "text",
+        "image"
+    ]
+}
