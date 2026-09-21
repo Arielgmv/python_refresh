@@ -3,7 +3,7 @@ import psycopg2
 DB_CONFIG = {
     "dbname": "practice_db",
     "user": "ariel",
-    "password": "mysecretpassword",
+    "password": "12345678",
     "host": "localhost",
     "port": "5432"
 }
@@ -20,7 +20,8 @@ def find_movies_by_genre(genre):
     cur = conn.cursor()
     
     query = """
-    -- YOUR SQL HERE --
+    SELECT * FROM movies
+    WHERE genre = %s;
     """
     
     cur.execute(query, (genre,))
@@ -40,7 +41,9 @@ def get_top_earning_movies(limit):
     cur = conn.cursor()
     
     query = """
-    -- YOUR SQL HERE --
+    SELECT * FROM movies
+    ORDER BY box_office DESC
+    LIMIT %s;
     """
     
     cur.execute(query, (limit,))
@@ -61,7 +64,9 @@ def get_average_rating_by_director():
     cur = conn.cursor()
     
     query = """
-    -- YOUR SQL HERE --
+    SELECT director, AVG(rating) as average
+    FROM movies
+    GROUP BY director;
     """
     
     cur.execute(query)
