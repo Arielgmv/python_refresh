@@ -87,7 +87,9 @@ def boost_nolan_ratings():
     cur = conn.cursor()
     
     query = """
-    -- YOUR SQL HERE --
+    UPDATE movies
+    SET rating = rating + 0.5
+    WHERE director = %s;
     """
     
     cur.execute(query, ("Christopher Nolan",))
@@ -106,7 +108,8 @@ def delete_old_movies(year):
     cur = conn.cursor()
     
     query = """
-    -- YOUR SQL HERE --
+    DELETE FROM movies
+    WHERE release_year < %s;
     """
     
     cur.execute(query, (year,))

@@ -10,3 +10,10 @@ limit 1;
 select m.director, avg(m.rating) as average
 from movies m 
 group by m.director;
+
+update movies 
+set rating = rating + 0.5
+where director = 'Christopher Nolan';
+
+delete from movies 
+where release_year < 1980;

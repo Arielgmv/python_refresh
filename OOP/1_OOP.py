@@ -22,7 +22,7 @@ class Sensor:
         self.current_reading = new_value        
     # Write your is_alert_triggered method here
     def is_alert_triggered(self) -> bool:
-        return self.current_reading >= self.threshold
+        return self.current_reading > self.threshold
     
 # --- Test your Class ---
 # Create two different sensors from the same blueprint
@@ -58,19 +58,28 @@ Requirements:
 # === Exercise 2: The Sensor Network ===
 
 class SensorNetwork:
-    # TODO: Write your __init__ method here
+    # Write your __init__ method here
+    def __init__(self, name: str) -> None:
+        self.name = name
+        self.sensors = []
+    # Write your add_sensor method here
+    def add_sensor(self, sensor: Sensor) -> None:
+        self.sensors.append(sensor)
     
-    # TODO: Write your add_sensor method here
-    
-    # TODO: Write your get_triggered_alarms method here
-    pass
+    # Write your get_triggered_alarms method here
+    def get_triggered_alarms(self) -> list[str]:
+        triggered_alarms = []
+        for sensor in self.sensors:
+            if sensor.is_alert_triggered():
+                triggered_alarms.append(sensor.name)
+        return triggered_alarms
 
 
 # --- Test your Classes ---
 # 1. Create the network
 network = SensorNetwork("Data Center Alpha")
 
-# 2. Create individual sensors (using your class from Exercise 9)
+# 2. Create individual sensors (using your class from Exercise 1)
 temp_sensor = Sensor("Server Room Temp", threshold=80.0)
 cpu_sensor = Sensor("CPU Usage", threshold=95.0)
 humidity_sensor = Sensor("Humidity", threshold=60.0)
@@ -86,7 +95,7 @@ cpu_sensor.update_reading(50.0)    # Will NOT trigger
 humidity_sensor.update_reading(70.0) # Will trigger
 
 # 5. Check the network
-print("\nExercise 10: The Sensor Network")
+print("\nExercise 2: The Sensor Network")
 alarms = network.get_triggered_alarms()
 print(f"Network '{network.name}' has triggered alarms in: {alarms}")
 
