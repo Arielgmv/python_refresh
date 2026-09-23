@@ -1,3 +1,4 @@
+-- exercise 2
 select *
 from movies m
 where m.genre = 'Crime';
@@ -17,3 +18,5 @@ where director = 'Christopher Nolan';
 
 delete from movies 
 where release_year < 1980;
+
+-- exercise 3
