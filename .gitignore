@@ -1,3 +1,6 @@
 virtual_environment/
 db_connection.py
 docker-compose.yml
+__pycache__/
+*.py[cod]
+*$py.class
