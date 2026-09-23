@@ -1,4 +1,4 @@
-# === Exercise 1: The Smart Sensor (My First Class) ===
+# === Exercise 1: The Smart Sensor ===
 """
 The Goal: Create a Sensor class that monitors a value and knows if it's in danger.
 Requirements:
@@ -9,8 +9,6 @@ Requirements:
 3. Write a method called update_reading(self, new_value). It should update self.current_reading to the new_value.
 4. Write a method called is_alert_triggered(self). It should return True if self.current_reading is greater than self.threshold, otherwise return False.
 """
-# === Exercise 9: The Smart Sensor ===
-
 class Sensor:
     # Write your __init__ method here
     def __init__(self, name: str, threshold: float) -> None:
@@ -55,8 +53,6 @@ Requirements:
  - If a sensor's alarm is triggered (use the method you built in Exercise 1!), add the sensor's name to a new list.
  - Return the list of triggered sensor names.
 """
-# === Exercise 2: The Sensor Network ===
-
 class SensorNetwork:
     # Write your __init__ method here
     def __init__(self, name: str) -> None:
@@ -101,3 +97,54 @@ print(f"Network '{network.name}' has triggered alarms in: {alarms}")
 
 # Expected Output:
 # Network 'Data Center Alpha' has triggered alarms in: ['Server Room Temp', 'Humidity']
+
+# === Exercise 3: The Playlist A ===
+
+class Song:
+    # Write __init__
+    def __init__(self, title: str, artist: str, duration_minutes: float) -> None:
+        self.title = title
+        self.artist = artist
+        self.duration_minutes = duration_minutes
+    # Write is_long_song
+    def is_long_song(self) -> bool:
+        return self.duration_minutes > 4
+
+# --- Test Step 1 ---
+song1 = Song("Bohemian Rhapsody", "Queen", 5.5)
+song2 = Song("Blinding Lights", "The Weeknd", 3.2)
+
+print("\nExercise 3: The Playlist A")
+print(song1.is_long_song()) # Should be True
+print(song2.is_long_song()) # Should be False
+
+# === Exercise 4: The Playlist B ===
+class Playlist:
+    # TODO: Write __init__
+    
+    # TODO: Write add_song
+    
+    # TODO: Write get_long_songs
+    pass
+
+
+# --- Test Step 2 ---
+# 1. Create the playlist
+my_playlist = Playlist("My Road Trip")
+
+# 2. Create songs (using your class from Step 1)
+s1 = Song("Bohemian Rhapsody", "Queen", 5.5)
+s2 = Song("Blinding Lights", "The Weeknd", 3.2)
+s3 = Song("Stairway to Heaven", "Led Zeppelin", 8.0)
+
+# 3. Add them to the playlist
+my_playlist.add_song(s1)
+my_playlist.add_song(s2)
+my_playlist.add_song(s3)
+
+# 4. Get the long songs
+print("\nExercise 4: The Playlist B")
+print(f"Long songs in '{my_playlist.name}': {my_playlist.get_long_songs()}")
+
+# Expected Output:
+# Long songs in 'My Road Trip': ['Bohemian Rhapsody', 'Stairway to Heaven']
