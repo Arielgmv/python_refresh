@@ -120,12 +120,21 @@ print(song2.is_long_song()) # Should be False
 
 # === Exercise 4: The Playlist B ===
 class Playlist:
-    # TODO: Write __init__
-    
-    # TODO: Write add_song
-    
-    # TODO: Write get_long_songs
-    pass
+    # Write __init__
+    def __init__(self, name: str) -> None:
+        self.name = name
+        self.songs = []
+    # Write add_song
+    def add_song(self, song: Song) -> None:
+        self.songs.append(song)
+
+    # Write get_long_songs
+    def get_long_songs(self) -> list[str]:
+        long_titles = []
+        for song in self.songs:
+            if song.is_long_song():
+                long_titles.append(song.title)
+        return long_titles
 
 
 # --- Test Step 2 ---
