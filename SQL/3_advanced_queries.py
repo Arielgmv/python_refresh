@@ -21,7 +21,10 @@ def get_movies_with_actors():
     cur = conn.cursor()
     
     query = """
-    -- YOUR SQL HERE --
+    SELECT m.title, a.name 
+    FROM movies m
+    INNER JOIN actors a
+    ON m.id  = a.id;
     """
     
     cur.execute(query)
@@ -42,7 +45,10 @@ def get_all_movies_even_without_actors():
     cur = conn.cursor()
     
     query = """
-    -- YOUR SQL HERE --
+    SELECT  m.title, a.name
+    FROM movies m 
+    LEFT JOIN actors a 
+    ON m.id  = a.id;
     """
     
     cur.execute(query)

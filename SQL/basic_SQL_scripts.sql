@@ -20,3 +20,12 @@ delete from movies
 where release_year < 1980;
 
 -- exercise 3
+select m.title, a.name 
+from movies m
+inner join actors a
+on m.id  = a.id;
+
+select  m.title, a.name
+from movies m 
+left join actors a 
+on m.id  = a.id;
