@@ -110,6 +110,11 @@ class Song:
     def is_long_song(self) -> bool:
         return self.duration_minutes > 4
 
+    # Add the __str__ method here!
+    # It should return: f"{self.title} by {self.artist}"
+    def __str__(self) -> str:
+        return f"{self.title} by {self.artist}"
+
 # --- Test Step 1 ---
 song1 = Song("Bohemian Rhapsody", "Queen", 5.5)
 song2 = Song("Blinding Lights", "The Weeknd", 3.2)
@@ -136,6 +141,10 @@ class Playlist:
                 long_titles.append(song.title)
         return long_titles
 
+    # Add the __len__ method here!
+    # It should return the length of self.songs
+    def __len__(self) -> int:
+        return len(self.songs)
 
 # --- Test Step 2 ---
 # 1. Create the playlist
@@ -155,5 +164,61 @@ my_playlist.add_song(s3)
 print("\nExercise 4: The Playlist B")
 print(f"Long songs in '{my_playlist.name}': {my_playlist.get_long_songs()}")
 
+print("Printing the song object directly:")
+print(s1)  # This will automatically call s1.__str__()!
+
+print(f"\nNumber of songs in the playlist: {len(my_playlist)}") # This calls my_playlist.__len__()
+
 # Expected Output:
 # Long songs in 'My Road Trip': ['Bohemian Rhapsody', 'Stairway to Heaven']
+
+# === Exercise 5: The Premium Playlist (Inheritance) ===
+"""
+The Goal: Create a PremiumPlaylist class that inherits from your existing Playlist class, but restricts the number of songs it can hold.
+Requirements:
+1. Create a class named PremiumPlaylist that inherits from Playlist. The syntax is:
+   class PremiumPlaylist(Playlist):
+2. Write the __init__ method. It should take name (str) and max_songs (int).
+    - Crucial Step: Inside __init__, call the parent's initializer using super().__init__(name). This sets up self.name and self.songs automatically!
+    - Then, save the limit: self.max_songs = max_songs.
+3. Override the add_song method.
+    - Before adding the song, check if the current number of songs (len(self)) is less than self.max_songs.
+    - If it is, call the parent's add_song method using super().add_song(song).
+    - If it is not, print a warning message: "Playlist is full! Cannot add more songs."
+"""
+
+# (Assume your Playlist class from the previous exercise is already defined above)
+
+print("\nExercise 5: The Premium Playlist")
+class PremiumPlaylist(Playlist):
+    # Write your __init__ method here
+    def __init__(self, name: str, max_songs: int) -> None:        
+    # Hint: Use super().__init__(name)
+        super().__init__(name)
+        self.max_songs = max_songs
+    
+    # Write your add_song method here
+    # Hint: Use len(self) to check the limit, and super().add_song(song) to add it
+    def add_song(self, song: Song) -> None:
+        if (len(self)) < self.max_songs:
+            super().add_song(song)
+        else:
+            print("Playlist is full! Cannot add more songs.")
+
+
+# --- Test your Inheritance ---
+# 1. Create a premium playlist with a limit of 2 songs
+premium_mix = PremiumPlaylist("Top Hits", max_songs=2)
+
+# 2. Create songs
+s1 = Song("Bohemian Rhapsody", "Queen", 5.5)
+s2 = Song("Blinding Lights", "The Weeknd", 3.2)
+s3 = Song("Stairway to Heaven", "Led Zeppelin", 8.0)
+
+# 3. Add songs (The first two should work, the third should trigger the warning)
+premium_mix.add_song(s1)
+premium_mix.add_song(s2)
+premium_mix.add_song(s3) 
+
+print(f"Songs in '{premium_mix.name}': {len(premium_mix)}")
+print(f"Long songs: {premium_mix.get_long_songs()}") # Notice how you get this method for free!
