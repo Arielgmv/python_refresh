@@ -222,3 +222,91 @@ premium_mix.add_song(s3)
 
 print(f"Songs in '{premium_mix.name}': {len(premium_mix)}")
 print(f"Long songs: {premium_mix.get_long_songs()}") # Notice how you get this method for free!
+
+# === Exercise 6: The AI Experiment Tracker (Dataclasses) ===
+"""
+The Goal: Rewrite a class using the @dataclass decorator, and add default values.
+Context: In Machine Learning, we run "Experiments" with different settings (hyperparameters) and track the results.
+Requirements:
+1. Import the dataclass tool: from dataclasses import dataclass
+2. Add @dataclass right above your class definition.
+3. Define your variables with type hints. Do not write an __init__ method!
+4. Notice how you can set default values (like accuracy = 0.0).
+"""
+from dataclasses import dataclass
+
+# === Exercise 6: The AI Experiment Tracker ===
+
+#Add the @dataclass decorator here
+@dataclass
+class MLExperiment:
+    # TODO: Define the attributes using type hints. 
+    # No __init__ needed!
+    name: str
+    learning_rate: float
+    epochs: int
+    accuracy: float = 0.0  # Default value
+
+    # You can still add custom methods!
+    def print_summary(self):
+        print(f"Experiment '{self.name}' ran for {self.epochs} epochs with LR={self.learning_rate}. Final Accuracy: {self.accuracy}")
+
+
+# --- Test your Dataclass ---
+# Notice how clean and fast it is to create objects now!
+exp1 = MLExperiment(name="Baseline Model", learning_rate=0.01, epochs=10)
+exp2 = MLExperiment(name="High LR Test", learning_rate=0.1, epochs=5, accuracy=0.85)
+
+print("\nExercise 6: The AI Experiment Tracker")
+exp1.print_summary()
+exp2.print_summary()
+
+# Bonus: Dataclasses also automatically create a nice __str__ (called __repr__) for you!
+print("\nRaw object print:")
+print(exp1) 
+
+# === Exercise 7: Encapsulation ===
+"""
+The Goal: Create a NeuralNetwork class that uses Python's @property decorator to validate data before it is saved.
+Requirements:
+1. Create a class NeuralNetwork.
+2. In __init__, take a learning_rate. But instead of saving it as self.learning_rate, save it as self._learning_rate (the underscore indicates it's "private" or protected).
+3. Create a getter method using @property. It should just return self._learning_rate.
+4. Create a setter method using @learning_rate.setter.
+    - It should check if the value is greater than 0.
+    - If it is, set self._learning_rate = value.
+    - If it is NOT, print a warning: "Error: Learning rate must be positive!" and do not change the value.
+"""
+class NeuralNetwork:
+    def __init__(self, learning_rate: float):
+        # We assign it using the setter we are about to create!
+        self.learning_rate = learning_rate 
+
+    # Write the @property getter for learning_rate
+    @property
+    def learning_rate(self):
+        return self._learning_rate
+    
+    # Write the @learning_rate.setter to validate the value
+    @learning_rate.setter
+    def learning_rate(self, value):
+        if value > 0:
+            self._learning_rate = value
+        else:
+            print("Error: Learning rate must be positive!")
+
+
+# --- Test your Encapsulation ---
+print("\nExercise 7: Encapsulation")
+
+# 1. Create a valid network
+my_nn = NeuralNetwork(0.01)
+print(f"Initial learning rate: {my_nn.learning_rate}")
+
+# 2. Try to update it with a valid number
+my_nn.learning_rate = 0.05
+print(f"Updated learning rate: {my_nn.learning_rate}")
+
+# 3. Try to update it with an INVALID number (This should trigger your setter's warning!)
+my_nn.learning_rate = -0.5 
+print(f"Learning rate after bad update: {my_nn.learning_rate}") # Should still be 0.05!
