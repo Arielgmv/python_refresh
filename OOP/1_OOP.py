@@ -278,7 +278,7 @@ Requirements:
     - If it is NOT, print a warning: "Error: Learning rate must be positive!" and do not change the value.
 """
 class NeuralNetwork:
-    def __init__(self, learning_rate: float):
+    def __init__(self, learning_rate: float) -> None:
         # We assign it using the setter we are about to create!
         self.learning_rate = learning_rate 
 
@@ -289,7 +289,7 @@ class NeuralNetwork:
     
     # Write the @learning_rate.setter to validate the value
     @learning_rate.setter
-    def learning_rate(self, value):
+    def learning_rate(self, value) -> None:
         if value > 0:
             self._learning_rate = value
         else:
@@ -310,3 +310,80 @@ print(f"Updated learning rate: {my_nn.learning_rate}")
 # 3. Try to update it with an INVALID number (This should trigger your setter's warning!)
 my_nn.learning_rate = -0.5 
 print(f"Learning rate after bad update: {my_nn.learning_rate}") # Should still be 0.05!
+
+# === Exercise 8: Polymorphism (The AI Model Interface) ===
+"""
+The Goal: Create a base class that defines the "interface", and then create child classes that implement it differently.
+Requirements:
+1. Create a base class called AIModel. It should have a method predict(self, data) that just prints "Base model cannot predict".
+2. Create a child class LinearRegression(AIModel). Override the predict method. It should return data * 2 + 1 (a fake linear math formula).
+3. Create a child class DecisionTree(AIModel). Override the predict method. It should return data * 3 (a fake tree math formula).
+4. The Magic: Write a function run_prediction(model: AIModel, data: float) that takes any model and calls .predict(data) on it.
+"""
+
+class AIModel:
+    def predict(self, data: float) -> float:        
+        return 0.0 # Base implementation
+
+# Create LinearRegression class that inherits from AIModel and overrides predict
+class LinearRegression(AIModel):
+    def predict(self, data: float) -> float:
+        return (data*2)+1
+        
+# Create DecisionTree class that inherits from AIModel and overrides predict
+class DecisionTree(AIModel):
+    def predict(self, data: float) -> float:
+        return (data*3)
+
+# Write the run_prediction function
+def run_prediction(model: AIModel, data: float) -> None:
+    # Call the model's predict method and print the result
+    result = model.predict(data)
+    print(f"Prediction for {data}: {result}")
+
+
+# --- Test your Polymorphism ---
+print("\nExercise 8: Polymorphism")
+
+# Create the models
+lin_model = LinearRegression()
+tree_model = DecisionTree()
+
+# Pass them to the same function!
+run_prediction(lin_model, 5.0) # Should use the Linear math
+run_prediction(tree_model, 5.0) # Should use the Tree math
+
+# === Exercise 8: The Data Generator (Iterators & yield) ===
+"""
+Context: When you train an AI model on millions of images, you cannot load all of them into RAM at once—your computer will crash. Instead, you load them one by one as the model needs them.
+In Python, we do this using a Generator. Instead of returning a value and ending the function, a generator uses yield to pause the function, give a value, and wait to be called again.
+The Goal: Write a generator function that simulates an infinite stream of data for an AI model.
+Requirements:
+1. Create a function called data_generator(batch_size: int).
+2. Inside the function, create an infinite while True: loop.
+3. Inside the loop, generate a "fake batch" of data (just a list of random numbers, or just the numbers 1 to batch_size).
+4. Use yield to send that batch to the caller. (The function will pause here until the next batch is requested).
+5. Bonus: Add a small counter so it prints "Generating batch X..." every time it yields.
+"""
+
+# Write the data_generator function
+def data_generator(batch_size: int):
+    batch_counter = 1
+    while True:
+        fake_batch = list(range(1, batch_size + 1))
+        print(f"\n[Engine] Generating batch {batch_counter}...")
+        yield fake_batch
+        batch_counter +=1
+
+# --- Test your Generator ---
+print("\nExercise 8: The Data Generator")
+
+# Create the generator (Notice we don't call it with (), we just assign it!)
+my_data_stream = data_generator(batch_size=3)
+
+# Simulate an AI training loop asking for 4 batches of data
+print("Starting AI Training Loop...")
+for i in range(4):
+    # 'next()' asks the generator for the next batch
+    batch = next(my_data_stream) 
+    print(f"Model is training on batch: {batch}")
