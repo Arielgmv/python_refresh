@@ -387,3 +387,47 @@ for i in range(4):
     # 'next()' asks the generator for the next batch
     batch = next(my_data_stream) 
     print(f"Model is training on batch: {batch}")
+
+# === Exercise 9: The Timer Decorator ===
+"""
+The Goal: Write a decorator that measures how long it takes for an AI function to run.
+Requirements:
+1. Import time.
+2. Create a function called timer_decorator(func).
+3. Inside it, create a wrapper function.
+4. In the wrapper:
+        - Record the start time (start = time.time()).
+        - Call the original function: result = func().
+        - Record the end time (end = time.time()).
+        - Print how long it took.
+        - Return the result.
+5. Return the wrapper function.
+6. Use the @timer_decorator syntax on a fake train_model() function!
+"""
+
+import time
+
+# Write the timer_decorator
+def timer_decorator(func):
+    def wrapper():
+        # Add the timing logic here
+        start = time.time()
+        result = func()
+        end = time.time()
+        print(f"Time taken: {end - start:.2f} seconds")
+        return result
+    return wrapper
+
+# Apply the decorator to this function using @timer_decorator
+@timer_decorator
+def train_model():
+    print("Training AI model...")
+    time.sleep(2) # Simulate heavy AI work
+    print("Training complete!")
+    return "Model Weights"
+
+
+# --- Test your Decorator ---
+print("\nExercise 9: The Timer Decorator")
+result = train_model()
+print(f"Returned: {result}")
