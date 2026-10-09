@@ -87,20 +87,25 @@ class Greenhouse:
     # Write your __init__ method here
     def __init__(self, name: str) -> None:
         self.name = name
-        self.current = 0.0
+        self.current_temp = 0.0
         self.current_humidity = 0.0
         self.is_active = True
     # Write your update_environment method here
-    def update_environment(self, cleaned: clean_data) -> None:
-        
-
+    def update_environment(self, reading: dict) -> None:
+        self.current_temp = reading['temperature']
+        self.current_humidity = reading['humidity']    
+    # Write your check_alerts method here
+    def check_alerts(self) -> list[str]:
+        alerts = []
+        if self.current_temp > 90.0:
+            alerts.append("Warning: Temperature too high!")
+        if self.current_humidity < 20.0:
+            alerts.append("Warning: Humidity too low!")
+        return alerts
+    # Write your __str__ method here
+    def __str__(self) -> str:
+        return f"Greenhouse '{self.name}': Temp: {self.current_temp}°F, Humidity: {self.current_humidity}%"
     
-    # TODO: Write your check_alerts method here
-    
-    # TODO: Write your __str__ method here
-    pass
-
-
 # --- Test your Class ---
 # 1. Create the greenhouse
 my_greenhouse = Greenhouse("Main")
@@ -124,3 +129,71 @@ print("Alerts:", my_greenhouse.check_alerts())
 # Expected Output for Danger Status:
 # Greenhouse 'Main': Temp: 95.0°F, Humidity: 15.0%
 # Alerts: ['Warning: Temperature too high!', 'Warning: Humidity too low!']
+
+# === Smart Greenhouse: Exercise 3 ===
+"""
+The Goal: Create a SmartFarm class that holds multiple Greenhouse objects and can check all of them for alerts at once.
+Requirements:
+1. Create a class named SmartFarm.
+2. Write the __init__ method. It should take a farm_name (string).
+    - Save it as self.farm_name.
+    - Create an empty list called self.greenhouses = [].
+3. Write a method called add_greenhouse(self, greenhouse: Greenhouse). It should append the passed greenhouse object to self.greenhouses.
+4. Write a method called get_farm_alerts(self) -> dict[str, list[str]].
+    - Create an empty dictionary called all_alerts = {}.
+    - Loop through self.greenhouses.
+    - For each greenhouse, call its .check_alerts() method.
+    - If the list of alerts is not empty, add it to the all_alerts dictionary. The key should be the greenhouse's name, and the value should be the list of alerts.
+    - Return the all_alerts dictionary.
+"""
+class SmartFarm:
+    # Write your __init__ method here
+    def __init__(self, farm_name: str) -> None:
+        self.farm_name = farm_name
+        self.greenhouses = []
+    # Write your add_greenhouse method here
+    def add_greenhouse(self, greenhouse: Greenhouse) -> None:
+        self.greenhouses.append(greenhouse)
+    
+    # Write your get_farm_alerts method here
+    def get_farm_alerts(self) -> dict[str, list[str]]:
+        all_alerts = {}
+        for greenhouse in self.greenhouses:
+            alerts = greenhouse.check_alerts()
+            if alerts:
+                all_alerts[greenhouse.name] = alerts
+        return all_alerts
+
+# --- Test your Classes ---
+# 1. Create the farm
+my_farm = SmartFarm("Ariel's Organic Farm")
+
+# 2. Create individual greenhouses (using your class from Exercise 2)
+gh1 = Greenhouse("Tomato House")
+gh2 = Greenhouse("Cucumber House")
+gh3 = Greenhouse("Strawberry House")
+
+# 3. Add them to the farm
+my_farm.add_greenhouse(gh1)
+my_farm.add_greenhouse(gh2)
+my_farm.add_greenhouse(gh3)
+
+# 4. Simulate updating their environments
+gh1.update_environment({"temperature": 75.0, "humidity": 60.0}) # Safe
+gh2.update_environment({"temperature": 95.0, "humidity": 15.0}) # DANGER!
+gh3.update_environment({"temperature": 80.0, "humidity": 50.0}) # Safe
+
+# 5. Check the whole farm for alerts
+print("\nSmart Greenhouse: Exercise 3")
+farm_alerts = my_farm.get_farm_alerts()
+
+if farm_alerts:
+    print("ALERTS DETECTED ON FARM:")
+    for name, alerts in farm_alerts.items():
+        print(f" - {name}: {alerts}")
+else:
+    print("All greenhouses are operating normally.")
+
+# Expected Output:
+# ALERTS DETECTED ON FARM:
+#  - Cucumber House: ['Warning: Temperature too high!', 'Warning: Humidity too low!']
