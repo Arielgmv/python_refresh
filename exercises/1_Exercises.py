@@ -197,3 +197,55 @@ else:
 # Expected Output:
 # ALERTS DETECTED ON FARM:
 #  - Cucumber House: ['Warning: Temperature too high!', 'Warning: Humidity too low!']
+
+# === Smart Greenhouse: Exercise 4 ===
+"""
+The Goal: Create a HydroponicGreenhouse class that inherits from your Greenhouse class, but adds water monitoring.
+Requirements:
+1. Create a class HydroponicGreenhouse(Greenhouse).
+2. Write the __init__ method. It should take name (string).
+    - Crucial Step: Call the parent's initializer using super().__init__(name).
+    - Add a new attribute: self.water_ph_level = 7.0.
+3. Write a method update_water_ph(self, ph_level: float) that updates self.water_ph_level.
+4. Override the check_alerts method.
+    - First, call the parent's method to get the standard temperature/humidity alerts: alerts = super().check_alerts().
+    - Then, add a new rule: If self.water_ph_level is less than 5.5 OR greater than 6.5, append "Warning: Water pH out of range!" to the alerts list.
+    - Return the alerts list.
+"""
+# (Assume your Greenhouse class from Exercise 2 is already defined above)
+
+class HydroponicGreenhouse(Greenhouse):
+    # Write your __init__ method here (Use super()!)
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
+        self.water_ph_level = 7.0
+
+    # Write your update_water_ph method here
+    def update_water_ph(self, ph_level:float) -> None:
+        self.water_ph_level = ph_level
+
+    # Write your check_alerts method here (Override and use super()!)
+    def check_alerts (self) -> list[str]:
+        alerts = super().check_alerts()
+        if self.water_ph_level < 5.5 or self.water_ph_level > 6.5:
+            alerts.append("Warning: Water pH out of range!")
+        return alerts   
+
+
+# --- Test your Inheritance ---
+# 1. Create a hydroponic greenhouse
+hydro_gh = HydroponicGreenhouse("Lettuce Tank")
+
+# 2. Update environment (using inherited method)
+hydro_gh.update_environment({"temperature": 75.0, "humidity": 60.0})
+
+# 3. Update water pH
+hydro_gh.update_water_ph(4.0) # This is too acidic!
+
+print("\nSmart Greenhouse: Exercise 4")
+print(hydro_gh) # Uses inherited __str__
+print("Alerts:", hydro_gh.check_alerts()) 
+
+# Expected Output:
+# Greenhouse 'Lettuce Tank': Temp: 75.0°F, Humidity: 60.0%
+# Alerts: ['Warning: Water pH out of range!']
