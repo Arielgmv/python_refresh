@@ -249,3 +249,37 @@ print("Alerts:", hydro_gh.check_alerts())
 # Expected Output:
 # Greenhouse 'Lettuce Tank': Temp: 75.0°F, Humidity: 60.0%
 # Alerts: ['Warning: Water pH out of range!']
+
+# === Smart Greenhouse: Exercise 5 ===
+"""
+The Goal: Create a SensorReading dataclass to replace the messy dictionaries. This will make your code strictly typed and much safer.
+Requirements:
+1. Import the dataclass tool: from dataclasses import dataclass
+2. Create a @dataclass named SensorReading.
+3. Add three attributes with type hints:
+    - sensor_id: int
+    - temperature: float
+    - humidity: float
+4. Add a method inside the dataclass called to_fahrenheit(self). It should return the temperature converted to Fahrenheit. (Hint: Dataclasses are just normal classes, so you can add methods to them!)
+"""
+from dataclasses import dataclass
+
+# Create the @dataclass here
+@dataclass
+class SensorReading:
+    sensor_id: int
+    temperature: float
+    humidity: float
+
+    def to_fahrenheit(self) -> float:
+        fahrenheit_value = (self.temperature * 9/5) + 32
+        return fahrenheit_value
+
+# --- Test your Dataclass ---
+# Notice how clean it is to create structured data now!
+reading1 = SensorReading(sensor_id=1, temperature=20.0, humidity=60.0)
+reading2 = SensorReading(sensor_id=2, temperature=30.0, humidity=45.0)
+
+print("\nSmart Greenhouse: Exercise 5")
+print(f"Raw object: {reading2}")
+print(f"Temperature in Fahrenheit: {reading2.to_fahrenheit()}°F")
